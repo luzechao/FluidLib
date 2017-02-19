@@ -16,11 +16,43 @@ Ideal Gass Property on Molar Bases: T[K], h/u [kJ/kmol], s^o [kJ/kmol-K]";
 Begin["`Private`"]; (* note ` character both before and after Private *)
 
 idealgas = Import[FileNameJoin[{NotebookDirectory[], "data", "ideal_gas.csv"}]];
+air = Import[FileNameJoin[{NotebookDirectory[], "data", "air.csv"}]];
 (* ImplemeNeentation section *)
 
 (* Function definitions will go into this section *)
 
-IdealGasProp[Name_, T_, PropertyName_]:=Which[Name=="CO2",Which[PropertyName=="h",co2enthalpy[T]]]
+IdealGasProp[Name_, T_, PropertyName_]:=Which[Name=="CO2",Which[PropertyName=="h",co2enthalpy[T],
+PropertyName=="u",Interpolation[idealgas[[All,{1,3}]]][T],
+PropertyName=="s",Interpolation[idealgas[[All,{1,4}]]][T]
+],
+Name=="CO",
+Which[PropertyName=="h",Interpolation[idealgas[[All,{1,5}]]][T],
+PropertyName=="u",Interpolation[idealgas[[All,{1,6}]]][T],
+PropertyName=="s",Interpolation[idealgas[[All,{1,7}]]][T]
+],
+Name=="H2O",
+Which[PropertyName=="h",Interpolation[idealgas[[All,{1,8}]]][T],
+PropertyName=="u",Interpolation[idealgas[[All,{1,9}]]][T],
+PropertyName=="s",Interpolation[idealgas[[All,{1,10}]]][T]
+],
+Name=="O2",
+Which[PropertyName=="h",Interpolation[idealgas[[All,{1,11}]]][T],
+PropertyName=="u",Interpolation[idealgas[[All,{1,12}]]][T],
+PropertyName=="s",Interpolation[idealgas[[All,{1,13}]]][T]
+],
+Name=="N2",
+Which[PropertyName=="h",Interpolation[idealgas[[All,{1,14}]]][T],
+PropertyName=="u",Interpolation[idealgas[[All,{1,15}]]][T],
+PropertyName=="s",Interpolation[idealgas[[All,{1,16}]]][T]
+],
+Name=="Air",
+Which[PropertyName=="h",Interpolation[air[[All,{1,2}]]][T],
+PropertyName=="u",Interpolation[air[[All,{1,3}]]][T],
+PropertyName=="s",Interpolation[air[[All,{1,4}]]][T],
+PropertyName=="pr",Interpolation[air[[All,{1,5}]]][T],
+PropertyName=="vr",Interpolation[air[[All,{1,6}]]][T]
+]
+]
 (*If[Name\[Equal]"CO2", If[PropertyName\[Equal]"Enthalpy",co2enthalpy[T],Print["Function is not implemented"]],Print["Function is not implemented"]]*)
 
 
