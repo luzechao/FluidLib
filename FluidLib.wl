@@ -70,7 +70,7 @@ PropertyName=="vr",Interpolation[air[[All,{1,6}]]][T]
 
 SatWaterProp[Index_, IndexValue_, PropertyName_]:=Which[
 Index=="T",
-Which[PropertyName=="T",Interpolation[waterT[[All,{1,2}]]][IndexValue],
+Which[PropertyName=="P",Interpolation[waterT[[All,{1,2}]]][IndexValue],
 PropertyName=="v",Interpolation[waterT[[All,{1,3}]]][IndexValue],
 PropertyName=="u",Interpolation[waterT[[All,{1,5}]]][IndexValue],
 PropertyName=="h",Interpolation[waterT[[All,{1,7}]]][IndexValue],
@@ -87,7 +87,7 @@ PropertyName=="s",Interpolation[waterP[[All,{1,10}]]][IndexValue]
 
 SatVaporProp[Index_, IndexValue_, PropertyName_]:=Which[
 Index=="T",
-Which[PropertyName=="T",Interpolation[waterT[[All,{1,2}]]][IndexValue],
+Which[PropertyName=="P",Interpolation[waterT[[All,{1,2}]]][IndexValue],
 PropertyName=="v",Interpolation[waterT[[All,{1,4}]]][IndexValue],
 PropertyName=="u",Interpolation[waterT[[All,{1,6}]]][IndexValue],
 PropertyName=="h",Interpolation[waterT[[All,{1,9}]]][IndexValue],
