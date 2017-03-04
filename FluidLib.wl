@@ -15,14 +15,16 @@ Ideal Gass Property on Molar Bases: T[K], h/u [kJ/kmol], s^o [kJ/kmol-K]";
 
 (* The Following function is for look-up table for Saturated Water (Table A-2 p. 891 in textbook)*)
 SatWaterProp::usage = "SatWaterProp[Index, IndexValue, PropertyName]
-Saturate water properties are in SI units: T[Degree C], v[m^3/kg], h/u [kJ/kmol], s [kJ/kg/K]";
+Saturate water properties are in SI units: T[Degree C], v[m^3/kg], h/u [kJ/kg], s [kJ/kg-K]";
 
 SatVaporProp::usage = "SatVaporProp[Index, IndexValue, PropertyName]
-Saturate water vapor properties are in SI units: T[Degree C], v[m^3/kg], h/u [kJ/kmol], s [kJ/kg/K]";
+Saturate water vapor properties are in SI units: T[Degree C], v[x10^3 m^3/kg], h/u [kJ/kg], s [kJ/kg-K]";
 
 (*(* The Following function is for look-up table for Saturated Vapor (Table A-2 p. 891 in textbook)*)
 SatWaterProp::usage = "SatVaporProp[Index, IndexValue, PropertyName]
 Saturate vapor properties are in SI units: T[Degree C], P[bar], v[m^3/kg], h/u [kJ/kmol], s [kJ/kg/K]";*)
+SuperHeatedVapor::usage = "SuperHeatedVapor[Pressure, Temperature, PropertyName]
+Super heated water vapor properties: P[bar], T[\[Degree]C], h/u [kJ/kg], s [kJ/kg-K]";
 
 Begin["`Private`"]; (* note ` character both before and after Private *)
 
@@ -30,6 +32,7 @@ idealgas = Import[FileNameJoin[{NotebookDirectory[], "data", "ideal_gas.csv"}]];
 air = Import[FileNameJoin[{NotebookDirectory[], "data", "air.csv"}]];
 waterT = Import[FileNameJoin[{NotebookDirectory[],"data","SaturatedWaterTempTable.csv"}]];
 waterP = Import[FileNameJoin[{NotebookDirectory[],"data","SaturatedWaterPressureTable.csv"}]];
+waterSHV = Import[FileNameJoin[{NotebookDirectory[],"data","waterSHV.wdx"}]];
 (* ImplemeNeentation section *)
 
 (* Function definitions will go into this section *)
@@ -100,6 +103,17 @@ PropertyName=="u",Interpolation[waterP[[All,{1,6}]]][IndexValue],
 PropertyName=="h",Interpolation[waterP[[All,{1,9}]]][IndexValue],
 PropertyName=="s",Interpolation[waterP[[All,{1,11}]]][IndexValue]
 ]
+]
+
+SuperHeatedVapor[P_, T_, PropertyName_]:=Which[
+PropertyName=="v",
+Interpolation[waterSHV[[All,{1,2}]],InterpolationOrder->1][P,T],
+PropertyName=="u",
+Interpolation[waterSHV[[All,{1,3}]],InterpolationOrder->1][P,T],
+PropertyName=="h",
+Interpolation[waterSHV[[All,{1,4}]],InterpolationOrder->1][P,T],
+PropertyName=="s",
+Interpolation[waterSHV[[All,{1,5}]],InterpolationOrder->1][P,T]
 ]
 
 
